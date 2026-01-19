@@ -1,0 +1,6 @@
+---
+- name: Prepare Servers for Docker
+  hosts: webservers
+  become: yes
+  roles:
+    - docker-setup
