@@ -1,9 +1,16 @@
 import mongoose from "mongoose";
 
 export const connectDB = async () => {
-  await mongoose
-    .connect(
-      process.env.MONGO_URL
-    )
-    .then(() =>console.log("DB Connected"));
+  try {
+    const uri = process.env.MONGO_URI; 
+    if (!uri) {
+      throw new Error("MONGO_URI is not defined");
+    }
+
+    await mongoose.connect(uri);
+    console.log("MongoDB connected");
+  } catch (error) {
+    console.error("MongoDB connection failed:", error.message);
+    process.exit(1); 
+  }
 };

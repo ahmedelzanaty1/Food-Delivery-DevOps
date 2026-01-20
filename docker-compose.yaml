@@ -1,0 +1,43 @@
+version: "3.9"
+services:
+  mongo:
+    image: mongo:6
+    container_name: tomato-mongo
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+
+  backend:
+    build:
+      context: ./backend
+    container_name: tomato-backend
+    restart: always
+    ports:
+      - "4000:4000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/tomato
+    depends_on:
+      - mongo
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: tomato-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  admin:
+    build:
+      context: ./admin
+    container_name: tomato-admin
+    ports:
+      - "3001:80"
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:
