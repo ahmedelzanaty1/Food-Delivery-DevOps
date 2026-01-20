@@ -1,4 +1,5 @@
 version: "3.9"
+
 services:
   mongo:
     image: mongo:6
@@ -10,8 +11,7 @@ services:
       - "27017:27017"
 
   backend:
-    build:
-      context: ./backend
+    image: a7medelzanaty/backend:latest 
     container_name: tomato-backend
     restart: always
     ports:
@@ -22,18 +22,18 @@ services:
       - mongo
 
   frontend:
-    build:
-      context: ./frontend
+    image: a7medelzanaty/frontend:latest
     container_name: tomato-frontend
+    restart: always
     ports:
       - "3000:80"
     depends_on:
       - backend
 
   admin:
-    build:
-      context: ./admin
+    image: a7medelzanaty/admin:latest
     container_name: tomato-admin
+    restart: always
     ports:
       - "3001:80"
     depends_on:
